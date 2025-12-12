@@ -338,9 +338,7 @@ git push -u origin main
 5. **Find** `FRONTEND_URL`
 6. **Click** "Edit" (pencil icon)
 7. **Update Value** with your actual frontend URL:
-   ```
    https://voice-dashboard.vercel.app
-   ```
 8. **Click** "Save"
 
 ### Redeploy Backend
