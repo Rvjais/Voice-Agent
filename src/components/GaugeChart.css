@@ -1,0 +1,120 @@
+.gauge-chart {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.gauge-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    align-self: flex-start;
+}
+
+.gauge-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.gauge-progress {
+    transition: stroke-dashoffset 1s ease-out;
+    animation: gaugeAnimation 2s ease-out;
+}
+
+@keyframes gaugeAnimation {
+    from {
+        stroke-dashoffset: 283;
+    }
+}
+
+.gauge-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.gauge-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-glow);
+}
+
+.gauge-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.gauge-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.gauge-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+    .gauge-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .gauge-icon-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+
+    .gauge-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.25rem;
+    }
+
+    .gauge-value {
+        font-size: 1.75rem;
+    }
+}

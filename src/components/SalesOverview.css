@@ -1,0 +1,71 @@
+.sales-overview {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sales-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.sales-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.sales-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.growth-indicator {
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+}
+
+.growth-indicator.positive {
+    color: var(--accent-green);
+    background: rgba(67, 233, 123, 0.1);
+}
+
+.chart-container {
+    height: 300px;
+    width: 100%;
+}
+
+.custom-tooltip {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
+}
+
+.tooltip-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.custom-tooltip p {
+    font-size: 0.75rem;
+    margin: 0.25rem 0;
+}
+
+@media (max-width: 640px) {
+    .chart-container {
+        height: 250px;
+    }
+}

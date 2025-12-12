@@ -1,0 +1,120 @@
+.welcome-card {
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.welcome-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.4), transparent 60%);
+    pointer-events: none;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.welcome-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.welcome-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.welcome-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0.5rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-message {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.welcome-sub {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.welcome-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tap-text {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tap-text:hover {
+    color: var(--accent-blue);
+    transform: translateX(5px);
+}
+
+.welcome-brain {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.brain-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8) contrast(1.2) saturate(1.5);
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
+}
+
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 1.5rem;
+        min-height: 180px;
+    }
+
+    .welcome-name {
+        font-size: 1.5rem;
+    }
+
+    .welcome-brain {
+        width: 50%;
+        opacity: 0.3;
+    }
+}

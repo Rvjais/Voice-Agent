@@ -1,0 +1,125 @@
+.orders-overview {
+    padding: 1.5rem;
+}
+
+.orders-header {
+    margin-bottom: 2rem;
+}
+
+.orders-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.orders-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.trend-icon {
+    color: var(--accent-green);
+}
+
+.growth-text {
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+.orders-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+}
+
+.timeline-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.timeline-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 0 4px var(--bg-card);
+}
+
+.timeline-dot.green {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.timeline-dot.red {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.timeline-dot.blue {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.timeline-dot.orange {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.timeline-dot.purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.timeline-connector {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    margin-top: 0.25rem;
+    min-height: 30px;
+}
+
+.timeline-content {
+    flex: 1;
+    padding-top: 0.25rem;
+}
+
+.order-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.order-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+    .orders-overview {
+        padding: 1rem;
+    }
+
+    .timeline-dot {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+    .order-title {
+        font-size: 0.8125rem;
+    }
+}
