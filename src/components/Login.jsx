@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ onSwitchToRegister }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -71,7 +71,13 @@ const Login = () => {
                 <div className="auth-footer">
                     <p>
                         Don't have an account?{' '}
-                        <a href="/register" className="auth-link">Sign up</a>
+                        <button
+                            type="button"
+                            onClick={onSwitchToRegister}
+                            className="auth-link-button"
+                        >
+                            Sign up
+                        </button>
                     </p>
                 </div>
             </div>

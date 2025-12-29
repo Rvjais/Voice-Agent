@@ -150,6 +150,24 @@
     text-decoration: underline;
 }
 
+.auth-link-button {
+    background: none;
+    border: none;
+    color: var(--accent-purple);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color var(--transition-fast);
+    font-family: 'Inter', sans-serif;
+}
+
+.auth-link-button:hover {
+    color: var(--accent-blue);
+    text-decoration: underline;
+}
+
 @media (max-width: 640px) {
     .auth-card {
         padding: 2rem 1.5rem;

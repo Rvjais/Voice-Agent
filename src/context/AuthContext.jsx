@@ -30,6 +30,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const data = await authAPI.login(email, password);
             setUser(data.client);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.client));
             return { success: true };
         } catch (error) {
             return {

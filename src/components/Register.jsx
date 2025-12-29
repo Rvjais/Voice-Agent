@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { CreditCard } from 'lucide-react';
 import './Login.css';
 
-const Register = ({ onPaymentClick }) => {
+const Register = ({ onPaymentClick, onSwitchToLogin }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -121,7 +121,13 @@ const Register = ({ onPaymentClick }) => {
                 <div className="auth-footer">
                     <p>
                         Already have an account?{' '}
-                        <a href="/login" className="auth-link">Sign in</a>
+                        <button
+                            type="button"
+                            onClick={onSwitchToLogin}
+                            className="auth-link-button"
+                        >
+                            Sign in
+                        </button>
                     </p>
                 </div>
             </div>

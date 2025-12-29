@@ -66,27 +66,14 @@ function App() {
   if (!isAuthenticated) {
     if (currentPage === 'register') {
       return (
-        <div>
-          <Register onPaymentClick={() => setShowPayment(true)} />
-          <button
-            onClick={() => setCurrentPage('login')}
-            className="page-switch"
-          >
-            Back to Login
-          </button>
-        </div>
+        <Register
+          onPaymentClick={() => setShowPayment(true)}
+          onSwitchToLogin={() => setCurrentPage('login')}
+        />
       );
     }
     return (
-      <div>
-        <Login />
-        <button
-          onClick={() => setCurrentPage('register')}
-          className="page-switch"
-        >
-          Create Account
-        </button>
-      </div>
+      <Login onSwitchToRegister={() => setCurrentPage('register')} />
     );
   }
 
