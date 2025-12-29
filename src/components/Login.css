@@ -105,6 +105,27 @@
     cursor: not-allowed;
 }
 
+.payment-button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    margin-top: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all var(--transition-normal);
+}
+
+.payment-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-purple);
+    transform: translateY(-2px);
+}
+
 .auth-footer {
     margin-top: 2rem;
     text-align: center;

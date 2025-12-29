@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { CreditCard } from 'lucide-react';
 import './Login.css';
 
-const Register = () => {
+const Register = ({ onPaymentClick }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -104,6 +105,17 @@ const Register = () => {
                     >
                         {loading ? 'Creating account...' : 'Create Account'}
                     </button>
+
+                    {onPaymentClick && (
+                        <button
+                            type="button"
+                            onClick={onPaymentClick}
+                            className="btn btn-secondary payment-button"
+                        >
+                            <CreditCard size={18} />
+                            Go to Payment
+                        </button>
+                    )}
                 </form>
 
                 <div className="auth-footer">

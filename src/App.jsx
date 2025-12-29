@@ -4,11 +4,13 @@ import { agentsAPI, executionsAPI } from './services/api';
 import Login from './components/Login';
 import Register from './components/Register';
 import SimpleDashboard from './components/SimpleDashboard';
+import Payment from './components/Payment';
 import './App.css';
 
 function App() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [currentPage, setCurrentPage] = useState('login');
+  const [showPayment, setShowPayment] = useState(false);
   const [agents, setAgents] = useState([]);
   const [executions, setExecutions] = useState([]);
   const [stats, setStats] = useState(null);
@@ -53,12 +55,19 @@ function App() {
     );
   }
 
+  // Show payment page if requested
+  if (showPayment) {
+    return (
+      <Payment onBack={() => setShowPayment(false)} />
+    );
+  }
+
   // Show login/register pages
   if (!isAuthenticated) {
     if (currentPage === 'register') {
       return (
         <div>
-          <Register />
+          <Register onPaymentClick={() => setShowPayment(true)} />
           <button
             onClick={() => setCurrentPage('login')}
             className="page-switch"
@@ -88,6 +97,7 @@ function App() {
       stats={stats}
       loading={loading}
       onRefresh={fetchData}
+      onPaymentClick={() => setShowPayment(true)}
     />
   );
 }

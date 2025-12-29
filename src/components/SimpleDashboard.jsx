@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Phone, DollarSign, Users, RefreshCw, FileText, Mic, Plus, Download, Trash2 } from 'lucide-react';
+import { LogOut, Phone, DollarSign, Users, RefreshCw, FileText, Mic, Plus, Download, Trash2, CreditCard } from 'lucide-react';
 import { agentsAPI, executionsAPI } from '../services/api';
 import AddAgentModal from './AddAgentModal';
 import './SimpleDashboard.css';
 import './TranscriptsExpenses.css';
 
-const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh }) => {
+const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaymentClick }) => {
     const { logout, user } = useAuth();
     const [selectedExecution, setSelectedExecution] = useState(null);
     const [activePage, setActivePage] = useState('overview'); // Changed from activeSection
@@ -146,6 +146,16 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh }) => {
                         <DollarSign size={20} />
                         <span>Expenses</span>
                     </div>
+
+                    {onPaymentClick && (
+                        <div
+                            className="nav-item payment-nav-item"
+                            onClick={onPaymentClick}
+                        >
+                            <CreditCard size={20} />
+                            <span>Payment</span>
+                        </div>
+                    )}
                 </nav>
 
                 <button className="logout-btn" onClick={handleLogout}>
