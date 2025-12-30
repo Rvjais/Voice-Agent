@@ -3,6 +3,8 @@ import { useAuth } from './context/AuthContext';
 import { agentsAPI, executionsAPI } from './services/api';
 import Login from './components/Login';
 import Register from './components/Register';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 import SimpleDashboard from './components/SimpleDashboard';
 import Payment from './components/Payment';
 import './App.css';
@@ -11,10 +13,23 @@ function App() {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [currentPage, setCurrentPage] = useState('login');
   const [showPayment, setShowPayment] = useState(false);
+  const [resetToken, setResetToken] = useState(null);
   const [agents, setAgents] = useState([]);
   const [executions, setExecutions] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Check for reset token in URL on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+      setResetToken(token);
+      setCurrentPage('reset-password');
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -72,8 +87,29 @@ function App() {
         />
       );
     }
+    if (currentPage === 'forgot-password') {
+      return (
+        <ForgotPassword
+          onBackToLogin={() => setCurrentPage('login')}
+        />
+      );
+    }
+    if (currentPage === 'reset-password' && resetToken) {
+      return (
+        <ResetPassword
+          token={resetToken}
+          onBackToLogin={() => {
+            setCurrentPage('login');
+            setResetToken(null);
+          }}
+        />
+      );
+    }
     return (
-      <Login onSwitchToRegister={() => setCurrentPage('register')} />
+      <Login
+        onSwitchToRegister={() => setCurrentPage('register')}
+        onSwitchToForgotPassword={() => setCurrentPage('forgot-password')}
+      />
     );
   }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
-const Login = ({ onSwitchToRegister }) => {
+const Login = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -48,7 +48,19 @@ const Login = ({ onSwitchToRegister }) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                            <label htmlFor="password" style={{ margin: 0 }}>Password</label>
+                            {onSwitchToForgotPassword && (
+                                <button
+                                    type="button"
+                                    onClick={onSwitchToForgotPassword}
+                                    className="auth-link-button"
+                                    style={{ fontSize: '0.8125rem' }}
+                                >
+                                    Forgot Password?
+                                </button>
+                            )}
+                        </div>
                         <input
                             id="password"
                             type="password"
