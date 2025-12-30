@@ -23,10 +23,7 @@
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .auth-header p {
@@ -54,7 +51,7 @@
 
 .form-group input {
     padding: 0.875rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     color: var(--text-primary);
@@ -64,9 +61,9 @@
 
 .form-group input:focus {
     outline: none;
-    border-color: var(--accent-purple);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--accent-dark);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .form-group input::placeholder {
@@ -121,9 +118,8 @@
 }
 
 .payment-button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent-purple);
-    transform: translateY(-2px);
+    background: var(--bg-secondary);
+    border-color: var(--border-dark);
 }
 
 .auth-footer {
@@ -139,21 +135,21 @@
 }
 
 .auth-link {
-    color: var(--accent-purple);
+    color: var(--accent-dark);
     text-decoration: none;
     font-weight: 600;
     transition: color var(--transition-fast);
 }
 
 .auth-link:hover {
-    color: var(--accent-blue);
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
 .auth-link-button {
     background: none;
     border: none;
-    color: var(--accent-purple);
+    color: var(--accent-dark);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.875rem;
@@ -164,7 +160,7 @@
 }
 
 .auth-link-button:hover {
-    color: var(--accent-blue);
+    color: var(--text-primary);
     text-decoration: underline;
 }
 

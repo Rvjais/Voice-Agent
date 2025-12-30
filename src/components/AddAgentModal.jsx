@@ -26,7 +26,7 @@ const AddAgentModal = ({ onClose, onAgentAdded }) => {
 
         // Validation
         if (!formData.bolna_agent_id.trim()) {
-            setError('Bolna Agent ID is required');
+            setError('AItelz Agent ID is required');
             return;
         }
         if (!formData.name.trim()) {
@@ -78,7 +78,7 @@ const AddAgentModal = ({ onClose, onAgentAdded }) => {
 
                         <div className="form-group">
                             <label htmlFor="bolna_agent_id">
-                                Bolna Agent ID <span className="required">*</span>
+                                AItelz Agent ID <span className="required">*</span>
                             </label>
                             <input
                                 type="text"
@@ -91,7 +91,7 @@ const AddAgentModal = ({ onClose, onAgentAdded }) => {
                                 autoFocus
                             />
                             <small className="field-hint">
-                                Get this from your Bolna dashboard
+                                Get this from your AItelz dashboard
                             </small>
                         </div>
 

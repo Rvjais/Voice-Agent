@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Phone, DollarSign, Users, RefreshCw, FileText, Mic, Plus, Download, Trash2, CreditCard } from 'lucide-react';
+import { LogOut, Phone, DollarSign, Users, RefreshCw, FileText, Mic, Plus, Download, Trash2, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { agentsAPI, executionsAPI } from '../services/api';
 import AddAgentModal from './AddAgentModal';
 import './SimpleDashboard.css';
@@ -11,9 +11,28 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
     const [selectedExecution, setSelectedExecution] = useState(null);
     const [activePage, setActivePage] = useState('overview'); // Changed from activeSection
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // New state for desktop collapse
     const [showAddAgentModal, setShowAddAgentModal] = useState(false);
     const [syncing, setSyncing] = useState(false);
     const [selectedAgent, setSelectedAgent] = useState('all'); // Filter by agent
+    const [currency, setCurrency] = useState('USD'); // USD or INR
+
+    // Currency conversion rate (1 USD = 83 INR approximately)
+    const USD_TO_INR = 83;
+
+    // Currency formatter function
+    const formatCurrency = (amount) => {
+        if (currency === 'USD') {
+            return `$${amount.toFixed(2)}`;
+        } else {
+            return `₹${(amount * USD_TO_INR).toFixed(2)}`;
+        }
+    };
+
+    // Get currency symbol
+    const getCurrencySymbol = () => {
+        return currency === 'USD' ? '$' : '₹';
+    };
 
     const handleLogout = () => {
         if (window.confirm('Are you sure you want to logout?')) {
@@ -31,7 +50,7 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
             setSyncing(true);
             const result = await executionsAPI.syncNow();
             console.log('Sync result:', result);
-            alert(`✅ Sync complete! Synced ${result.synced} executions from Bolna.`);
+            alert(`✅ Sync complete! Synced ${result.synced} executions from AItelz.`);
             // Refresh data after sync
             await onRefresh();
         } catch (error) {
@@ -100,9 +119,18 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
             </button>
 
             {/* Sidebar */}
-            <div className={`sidebar-simple ${sidebarOpen ? 'open' : ''}`}>
+            <div className={`sidebar-simple ${sidebarOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`}>
+                {/* Desktop Collapse Toggle */}
+                <button
+                    className="sidebar-collapse-toggle"
+                    onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                    aria-label={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                >
+                    {sidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </button>
+
                 <div className="sidebar-header">
-                    <h2>Voice Dashboard</h2>
+                    <h2>AItelz</h2>
                     <p className="user-name">👤 {user?.name}</p>
                 </div>
 
@@ -179,10 +207,20 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
                         <h1>{activePage.charAt(0).toUpperCase() + activePage.slice(1)}</h1>
                         <p className="header-subtitle">Welcome back, {user?.name?.split(' ')[0] || 'User'}!</p>
                     </div>
-                    <button className="refresh-btn" onClick={onRefresh} disabled={loading}>
-                        <RefreshCw size={18} className={loading ? 'spinning' : ''} />
-                        <span className="refresh-text">Refresh</span>
-                    </button>
+                    <div className="header-actions">
+                        <button
+                            className="currency-toggle-btn"
+                            onClick={() => setCurrency(currency === 'USD' ? 'INR' : 'USD')}
+                            title={`Switch to ${currency === 'USD' ? 'INR (₹)' : 'USD ($)'}`}
+                        >
+                            <span className="currency-symbol">{getCurrencySymbol()}</span>
+                            <span className="currency-label">{currency}</span>
+                        </button>
+                        <button className="refresh-btn" onClick={onRefresh} disabled={loading}>
+                            <RefreshCw size={18} className={loading ? 'spinning' : ''} />
+                            <span className="refresh-text">Refresh</span>
+                        </button>
+                    </div>
                 </div>
 
                 {loading ? (
@@ -214,7 +252,7 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
                                         </div>
                                         <div className="stat-content">
                                             <h3>Total Expense</h3>
-                                            <p className="stat-value">${totalCost.toFixed(2)}</p>
+                                            <p className="stat-value">{formatCurrency(totalCost)}</p>
                                             <span className="stat-label">Add-on costs</span>
                                         </div>
                                     </div>
@@ -364,7 +402,7 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
                                                         <p className="execution-meta">
                                                             <span>👤 {execution.agent_id?.name || 'Unknown'}</span>
                                                             <span>⏱️ {Math.floor(execution.conversation_time / 60)}m {execution.conversation_time % 60}s</span>
-                                                            <span>💰 ${execution.total_cost?.toFixed(2) || '0.00'}</span>
+                                                            <span>💰 {formatCurrency(execution.total_cost || 0)}</span>
                                                         </p>
                                                         <p className="execution-date">
                                                             📅 {new Date(execution.started_at).toLocaleString()}
@@ -523,12 +561,12 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
                                 <div className="expenses-summary">
                                     <div className="expense-card total">
                                         <h3>Total Expenses</h3>
-                                        <p className="expense-value">${totalCost.toFixed(2)}</p>
+                                        <p className="expense-value">{formatCurrency(totalCost)}</p>
                                         <span>{totalCalls} call{totalCalls !== 1 ? 's' : ''}</span>
                                     </div>
                                     <div className="expense-card average">
                                         <h3>Average Cost per Call</h3>
-                                        <p className="expense-value">${totalCalls > 0 ? (totalCost / totalCalls).toFixed(2) : '0.00'}</p>
+                                        <p className="expense-value">{totalCalls > 0 ? formatCurrency(totalCost / totalCalls) : formatCurrency(0)}</p>
                                         <span>Per call</span>
                                     </div>
                                 </div>
@@ -564,7 +602,7 @@ const SimpleDashboard = ({ agents, executions, stats, loading, onRefresh, onPaym
                                                                 {execution.status}
                                                             </span>
                                                         </td>
-                                                        <td className="cost-cell">${execution.total_cost?.toFixed(2) || '0.00'}</td>
+                                                        <td className="cost-cell">{formatCurrency(execution.total_cost || 0)}</td>
                                                     </tr>
                                                 ))
                                             )}

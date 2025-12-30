@@ -29,7 +29,7 @@
 }
 
 .back-button:hover {
-    color: var(--accent-purple);
+    color: var(--text-primary);
 }
 
 .payment-title-section {
@@ -39,17 +39,14 @@
 }
 
 .payment-icon {
-    color: var(--accent-purple);
+    color: var(--text-primary);
 }
 
 .payment-title-section h1 {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .payment-title-section p {
@@ -81,64 +78,35 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
+    height: 2px;
+    background: var(--accent-dark);
     opacity: 0;
     transition: opacity var(--transition-normal);
 }
 
 .plan-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-hover);
 }
 
 .plan-card:hover::before {
     opacity: 1;
 }
 
-.plan-card-purple {
-    border-top: 4px solid #667eea;
-}
-
-.plan-card-blue {
-    border-top: 4px solid #4facfe;
-}
-
-.plan-card-green {
-    border-top: 4px solid #43e97b;
-}
-
-.plan-card-orange {
-    border-top: 4px solid #ffa726;
-}
-
+.plan-card-purple,
+.plan-card-blue,
+.plan-card-green,
+.plan-card-orange,
 .plan-card-pink {
-    border-top: 4px solid #f093fb;
+    border-top: 2px solid var(--border-dark);
 }
 
-.plan-card-purple:hover {
-    border-color: #667eea;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-}
-
-.plan-card-blue:hover {
-    border-color: #4facfe;
-    box-shadow: 0 8px 32px rgba(79, 172, 254, 0.3);
-}
-
-.plan-card-green:hover {
-    border-color: #43e97b;
-    box-shadow: 0 8px 32px rgba(67, 233, 123, 0.3);
-}
-
-.plan-card-orange:hover {
-    border-color: #ffa726;
-    box-shadow: 0 8px 32px rgba(255, 167, 38, 0.3);
-}
-
+.plan-card-purple:hover,
+.plan-card-blue:hover,
+.plan-card-green:hover,
+.plan-card-orange:hover,
 .plan-card-pink:hover {
-    border-color: #f093fb;
-    box-shadow: 0 8px 32px rgba(240, 147, 251, 0.3);
+    border-color: var(--accent-dark);
+    box-shadow: var(--shadow-hover);
 }
 
 .plan-icon {
@@ -152,33 +120,17 @@
     transition: transform var(--transition-normal);
 }
 
-.plan-card-purple .plan-icon {
-    background: rgba(102, 126, 234, 0.1);
-    color: #667eea;
-}
-
-.plan-card-blue .plan-icon {
-    background: rgba(79, 172, 254, 0.1);
-    color: #4facfe;
-}
-
-.plan-card-green .plan-icon {
-    background: rgba(67, 233, 123, 0.1);
-    color: #43e97b;
-}
-
-.plan-card-orange .plan-icon {
-    background: rgba(255, 167, 38, 0.1);
-    color: #ffa726;
-}
-
+.plan-card-purple .plan-icon,
+.plan-card-blue .plan-icon,
+.plan-card-green .plan-icon,
+.plan-card-orange .plan-icon,
 .plan-card-pink .plan-icon {
-    background: rgba(240, 147, 251, 0.1);
-    color: #f093fb;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .plan-card:hover .plan-icon {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.05);
 }
 
 .plan-name {
@@ -199,10 +151,10 @@
 .plan-button {
     width: 100%;
     padding: 0.875rem 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
+    background: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
     border-radius: var(--radius-md);
-    color: var(--text-primary);
+    color: white;
     font-weight: 600;
     font-size: 0.9375rem;
     cursor: pointer;
@@ -214,34 +166,14 @@
     margin-top: auto;
 }
 
-.plan-card-purple .plan-button:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
-    color: #667eea;
-}
-
-.plan-card-blue .plan-button:hover {
-    background: rgba(79, 172, 254, 0.1);
-    border-color: #4facfe;
-    color: #4facfe;
-}
-
-.plan-card-green .plan-button:hover {
-    background: rgba(67, 233, 123, 0.1);
-    border-color: #43e97b;
-    color: #43e97b;
-}
-
-.plan-card-orange .plan-button:hover {
-    background: rgba(255, 167, 38, 0.1);
-    border-color: #ffa726;
-    color: #ffa726;
-}
-
+.plan-card-purple .plan-button:hover,
+.plan-card-blue .plan-button:hover,
+.plan-card-green .plan-button:hover,
+.plan-card-orange .plan-button:hover,
 .plan-card-pink .plan-button:hover {
-    background: rgba(240, 147, 251, 0.1);
-    border-color: #f093fb;
-    color: #f093fb;
+    background: var(--accent-gray);
+    border-color: var(--accent-gray);
+    color: white;
 }
 
 .arrow-right {
