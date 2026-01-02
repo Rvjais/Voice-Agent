@@ -164,6 +164,19 @@ class BolnaService {
                 || executionData.billable_duration
                 || 0;
 
+            // Fetch existing execution to preserve extracted_data keys (especially _extraction_processed)
+            const existingExecution = await Execution.findOne({ bolna_execution_id: executionId });
+
+            let finalExtractedData = executionData.extracted_data || {};
+
+            // If we have already processed extraction locally, preserve those flags and data
+            if (existingExecution && existingExecution.extracted_data && existingExecution.extracted_data._extraction_processed) {
+                finalExtractedData = {
+                    ...finalExtractedData,
+                    ...existingExecution.extracted_data
+                };
+            }
+
             const executionDoc = {
                 bolna_execution_id: executionId,
                 agent_id: agentId,
@@ -174,7 +187,7 @@ class BolnaService {
                 from_number: executionData.telephony_data?.from_number || executionData.from_number,
                 to_number: executionData.telephony_data?.to_number || executionData.to_number,
                 call_sid: executionData.telephony_data?.call_sid || executionData.call_sid,
-                extracted_data: executionData.extracted_data || {},
+                extracted_data: finalExtractedData,
                 transcript: executionData.transcript || '',
                 metadata: {
                     ...executionData,
@@ -260,7 +273,15 @@ class BolnaService {
 
             const execution = await Execution.findOne({ bolna_execution_id: bolnaExecutionId });
             if (execution) {
-                execution.extracted_data = details.extracted_data || execution.extracted_data;
+                // Merge extracted_data to preserve local flags
+                if (execution.extracted_data && execution.extracted_data._extraction_processed) {
+                    execution.extracted_data = {
+                        ...(details.extracted_data || {}),
+                        ...execution.extracted_data
+                    };
+                } else {
+                    execution.extracted_data = details.extracted_data || execution.extracted_data;
+                }
                 execution.transcript = details.transcript || execution.transcript;
                 execution.metadata = {
                     ...execution.metadata,
