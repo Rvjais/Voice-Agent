@@ -1,5 +1,7 @@
 const Execution = require('../models/Execution');
 const Agent = require('../models/Agent');
+const sheetService = require('../services/sheetService');
+const path = require('path');
 
 // Get all executions for the authenticated client
 exports.getMyExecutions = async (req, res) => {
@@ -153,5 +155,100 @@ exports.getExecutionStats = async (req, res) => {
     } catch (error) {
         console.error('Get stats error:', error);
         res.status(500).json({ error: 'Failed to fetch statistics' });
+    }
+};
+
+// Export extracted doctor data to CSV
+exports.exportDoctorData = async (req, res) => {
+    try {
+        const { from, to, filename } = req.query;
+
+        // Get all agent IDs owned by this client
+        const clientAgents = await Agent.find({ client_id: req.clientId }).select('_id');
+        const agentIds = clientAgents.map(agent => agent._id);
+
+        if (agentIds.length === 0) {
+            return res.status(404).json({ error: 'No agents found' });
+        }
+
+        // Build query for executions with extracted doctor info
+        const query = {
+            agent_id: { $in: agentIds },
+            'extracted_data.doctor_info': { $exists: true }
+        };
+
+        // Add date filters if provided
+        if (from || to) {
+            query.started_at = {};
+            if (from) query.started_at.$gte = new Date(from);
+            if (to) query.started_at.$lte = new Date(to);
+        }
+
+        // Fetch executions with extracted data
+        const executions = await Execution.find(query)
+            .populate('agent_id', 'name')
+            .sort({ started_at: -1 });
+
+        if (executions.length === 0) {
+            return res.status(404).json({ error: 'No extracted data found' });
+        }
+
+        // Prepare data for CSV
+        const csvData = executions.map(execution => {
+            const doctorInfo = execution.extracted_data?.doctor_info || {};
+            return {
+                doctor_name: doctorInfo.doctor_name || '',
+                clinic_hospital_name: doctorInfo.clinic_hospital_name || '',
+                phone_number: doctorInfo.phone_number || '',
+                email_id: doctorInfo.email_id || '',
+                city: doctorInfo.city || '',
+                call_date: execution.started_at ? execution.started_at.toISOString().split('T')[0] : '',
+                call_time: execution.started_at ? execution.started_at.toISOString() : '',
+                execution_id: execution.bolna_execution_id || execution._id.toString(),
+                agent_name: execution.agent_id?.name || '',
+            };
+        });
+
+        // Generate filename
+        let csvFilename = filename;
+        if (!csvFilename) {
+            const date = new Date().toISOString().split('T')[0];
+            csvFilename = `doctor_data_${date}.csv`;
+        }
+
+        // Save to CSV
+        const filePath = sheetService.saveToCSV(csvData, csvFilename);
+
+        // Send file as download
+        res.download(filePath, csvFilename, (err) => {
+            if (err) {
+                console.error('Error sending file:', err);
+                if (!res.headersSent) {
+                    res.status(500).json({ error: 'Failed to download file' });
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Export doctor data error:', error);
+        res.status(500).json({ error: 'Failed to export data' });
+    }
+};
+
+// Get list of available CSV files
+exports.listExportedFiles = async (req, res) => {
+    try {
+        const files = sheetService.listCSVFiles();
+        res.json({
+            success: true,
+            files: files.map(file => ({
+                filename: file.filename,
+                size: file.size,
+                created: file.created,
+                modified: file.modified,
+            })),
+        });
+    } catch (error) {
+        console.error('List exported files error:', error);
+        res.status(500).json({ error: 'Failed to list files' });
     }
 };

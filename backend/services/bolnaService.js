@@ -1,6 +1,8 @@
 const axios = require('axios');
 const Agent = require('../models/Agent');
 const Execution = require('../models/Execution');
+const dataExtractionService = require('./dataExtractionService');
+const sheetService = require('./sheetService');
 
 class BolnaService {
     constructor() {
@@ -184,14 +186,70 @@ class BolnaService {
                 ended_at: executionData.updated_at ? new Date(executionData.updated_at) : null,
             };
 
-            await Execution.findOneAndUpdate(
+            const execution = await Execution.findOneAndUpdate(
                 { bolna_execution_id: executionId },
                 executionDoc,
                 { upsert: true, new: true }
             );
+
+            // Extract and save doctor information if transcript exists
+            if (execution.transcript && execution.transcript.trim().length > 0) {
+                await this.processTranscriptForExtraction(execution);
+            }
+
+            return execution;
         } catch (error) {
             console.error('Error upserting execution:', error.message);
             throw error;
+        }
+    }
+
+    /**
+     * Process transcript to extract doctor information and save to sheet
+     * @param {Object} execution - Execution document
+     */
+    async processTranscriptForExtraction(execution) {
+        try {
+            // Check if already processed (to avoid duplicates)
+            if (execution.extracted_data && execution.extracted_data._extraction_processed) {
+                return;
+            }
+
+            // Extract doctor information from transcript (using AI if available)
+            const extractedInfo = await dataExtractionService.extractDoctorInfo(execution.transcript);
+
+            // Only save if we have meaningful data
+            if (dataExtractionService.hasValidData(extractedInfo)) {
+                // Prepare data for sheet
+                const sheetData = {
+                    ...extractedInfo,
+                    call_date: execution.started_at ? execution.started_at.toISOString().split('T')[0] : '',
+                    call_time: execution.started_at ? execution.started_at.toISOString() : '',
+                    execution_id: execution.bolna_execution_id || execution._id.toString(),
+                };
+
+                // Save to CSV (append to daily file)
+                const date = new Date().toISOString().split('T')[0];
+                const filename = `doctor_data_${date}.csv`;
+                sheetService.appendToCSV(sheetData, filename);
+
+                // Send to Google Sheets (via Apps Script Webhook)
+                await sheetService.sendToGoogleAppsScript(sheetData);
+
+                // Update execution with extracted data
+                execution.extracted_data = {
+                    ...execution.extracted_data,
+                    doctor_info: extractedInfo,
+                    _extraction_processed: true,
+                    _extraction_date: new Date(),
+                };
+                await execution.save();
+
+                console.log(`✅ Extracted and saved doctor info for execution ${execution.bolna_execution_id}`);
+            }
+        } catch (error) {
+            console.error('Error processing transcript extraction:', error.message);
+            // Don't throw - we don't want to break the main sync process
         }
     }
 
@@ -210,6 +268,11 @@ class BolnaService {
                     recording_url: details.telephony_data?.recording_url,
                 };
                 await execution.save();
+
+                // Process transcript for extraction if available
+                if (execution.transcript && execution.transcript.trim().length > 0) {
+                    await this.processTranscriptForExtraction(execution);
+                }
             }
 
             return execution;

@@ -27,3 +27,7 @@ Thumbs.db
 # Build files
 dist/
 build/
+
+# Exported data files
+exports/
+*.csv

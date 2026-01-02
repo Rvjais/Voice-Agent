@@ -9,6 +9,8 @@ router.use(authMiddleware);
 
 router.get('/', executionController.getMyExecutions);
 router.get('/stats', executionController.getExecutionStats);
+router.get('/export/doctor-data', executionController.exportDoctorData);
+router.get('/export/files', executionController.listExportedFiles);
 router.get('/:executionId', executionController.getExecutionById);
 
 // Manual sync endpoint - triggers immediate sync from Bolna

@@ -5,7 +5,7 @@ const bolnaService = require('../services/bolnaService');
 const startExecutionSync = () => {
     // Run every hour: '0 * * * *'
     // For testing, run every 5 minutes: '*/5 * * * *'
-    cron.schedule('0 * * * *', async () => {
+    cron.schedule('* * * * *', async () => {
         console.log('⏰ Starting scheduled execution sync...');
         try {
             await bolnaService.syncAllExecutions();
