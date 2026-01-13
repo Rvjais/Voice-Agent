@@ -10,7 +10,20 @@ class SheetService {
     constructor() {
         // Directory to store exported sheets
         this.exportDir = path.join(__dirname, '../../exports');
-        this.ensureExportDir();
+
+        // In Vercel/Serverless environment, use /tmp
+        if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+            this.exportDir = '/tmp/exports';
+        }
+
+        try {
+            this.ensureExportDir();
+        } catch (error) {
+            console.warn(`⚠️ Failed to create export directory at ${this.exportDir}, using fallback path.`);
+            // Fallback to OS temp directory
+            this.exportDir = path.join(require('os').tmpdir(), 'voice-agent-exports');
+            this.ensureExportDir();
+        }
     }
 
     /**
