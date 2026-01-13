@@ -140,7 +140,7 @@ exports.forgotPassword = async (req, res) => {
 
         // Save hashed token and expiry (1 hour from now)
         client.resetPasswordToken = hashedToken;
-        client.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        client.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
         await client.save();
 
         // Send email with unhashed token
